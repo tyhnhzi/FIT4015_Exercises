@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ đếm ngược</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.countdown {
+    margin: 30px 0;
+}
+
+#timer {
+    font-size: 72px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+#message {
+    font-size: 24px;
+    color: #f44336;
+    min-height: 30px;
+}
+
+button {
+    padding: 12px 24px;
+    margin: 0 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#startBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#startBtn:hover {
+    background-color: #45a049;
+}
+
+#startBtn.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#resetBtn {
+    background-color: #f44336;
+    color: white;
+}
+
+#resetBtn:hover {
+    background-color: #da190b;
+} 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bộ đếm ngược</h1>
+        <div class="countdown">
+            <div id="timer">10</div>
+            <div id="message"></div>
+        </div>
+        <button id="startBtn">Bắt đầu</button>
+        <button id="resetBtn">Đặt lại</button>
+    </div>
+    <script>
+        $(document).ready(function() {
+    let countdown;
+    let timeLeft = 10;
+    let isRunning = false;
+
+    // Xử lý nút Bắt đầu
+    $('#startBtn').click(function() {
+        if (!isRunning) {
+            startCountdown();
+            $(this).addClass('disabled');
+        }
+    });
+
+    // Xử lý nút Đặt lại
+    $('#resetBtn').click(function() {
+        resetCountdown();
+    });
+
+    function startCountdown() {
+        isRunning = true;
+        $('#message').text('');
+        
+        countdown = setInterval(function() {
+            timeLeft--;
+            $('#timer').text(timeLeft);
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                $('#message').text('Thời gian đã hết!');
+                $('#startBtn').removeClass('disabled');
+                isRunning = false;
+            }
+        }, 1000);
+    }
+
+    function resetCountdown() {
+        clearInterval(countdown);
+        timeLeft = 10;
+        $('#timer').text(timeLeft);
+        $('#message').text('');
+        $('#startBtn').removeClass('disabled');
+        isRunning = false;
+    }
+}); 
+    </script>
+</body>
+</html> 

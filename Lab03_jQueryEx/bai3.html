@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Biểu mẫu Đăng ký</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+    .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.error {
+    display: block;
+    color: #f44336;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+input.error-input {
+    border-color: #f44336;
+}
+
+input.error-input:focus {
+    box-shadow: 0 0 5px rgba(244, 67, 54, 0.2);
+} 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đăng ký Tài khoản</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Tên:</label>
+                <input type="text" id="name" name="name">
+                <span class="error" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+                <span class="error" id="emailError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mật khẩu:</label>
+                <input type="password" id="password" name="password">
+                <span class="error" id="passwordError"></span>
+            </div>
+            
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function() {
+    const form = $('#registrationForm');
+    
+    // Xử lý sự kiện submit form
+    form.submit(function(e) {
+        e.preventDefault();
+        
+        // Reset trạng thái lỗi
+        clearErrors();
+        
+        // Lấy giá trị input
+        const name = $('#name').val().trim();
+        const email = $('#email').val().trim();
+        const password = $('#password').val();
+        
+        let isValid = true;
+        
+        // Kiểm tra tên
+        if (!name) {
+            showError('name', 'Vui lòng nhập tên của bạn');
+            isValid = false;
+        }
+        
+        // Kiểm tra email
+        if (!email) {
+            showError('email', 'Vui lòng nhập email');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showError('email', 'Email không hợp lệ');
+            isValid = false;
+        }
+        
+        // Kiểm tra mật khẩu
+        if (!password) {
+            showError('password', 'Vui lòng nhập mật khẩu');
+            isValid = false;
+        } else if (password.length < 6) {
+            showError('password', 'Mật khẩu phải có ít nhất 6 ký tự');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Nếu form hợp lệ, có thể submit ở đây
+            alert('Đăng ký thành công!');
+            form[0].reset();
+        }
+    });
+    
+    // Hàm kiểm tra email hợp lệ
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // Hàm hiển thị lỗi
+    function showError(fieldName, message) {
+        $(`#${fieldName}`).addClass('error-input');
+        $(`#${fieldName}Error`).text(message);
+    }
+    
+    // Hàm xóa tất cả lỗi
+    function clearErrors() {
+        $('.error').text('');
+        $('input').removeClass('error-input');
+    }
+    
+    // Xóa thông báo lỗi khi người dùng bắt đầu nhập
+    $('input').on('input', function() {
+        $(this).removeClass('error-input');
+        $(`#${this.id}Error`).text('');
+    });
+}); 
+    </script>
+</body>
+</html> 
